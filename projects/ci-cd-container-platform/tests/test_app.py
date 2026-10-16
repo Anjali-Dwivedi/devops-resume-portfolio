@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.config import Settings, validate_config_file
-from app.main import app
+from app.main import app, reset_runtime_counters
 
 
 client = TestClient(app)
@@ -49,6 +49,35 @@ def test_validate_rejects_unknown_env(tmp_path) -> None:
         assert False, "expected validation error"
     except Exception as exc:  # noqa: BLE001 — assert message content
         assert "environment" in str(exc).lower()
+
+
+def test_metrics_expose_synthetic_error_rate(monkeypatch) -> None:
+    monkeypatch.setenv("SYNTHETIC_ERROR_RATE", "0.05")
+    res = client.get("/metrics")
+    assert res.status_code == 200
+    assert "text/plain" in res.headers["content-type"]
+    assert "checkout_synthetic_error_rate 0.05" in res.text
+    assert "checkout_up 1" in res.text
+
+
+def test_synthetic_error_rate_one_fails_orders(monkeypatch, caplog) -> None:
+    monkeypatch.setenv("SYNTHETIC_ERROR_RATE", "1")
+    reset_runtime_counters()
+    with caplog.at_level("INFO", logger="checkout"):
+        res = client.post("/orders", json={"sku": "SKU-1", "quantity": 1})
+    assert res.status_code == 500
+    assert "synthetic_failure" in caplog.text
+
+
+def test_partial_synthetic_error_rate_is_deterministic(monkeypatch) -> None:
+    monkeypatch.setenv("SYNTHETIC_ERROR_RATE", "0.2")
+    reset_runtime_counters()
+    codes = [
+        client.post("/orders", json={"sku": "SKU-1", "quantity": 1}).status_code
+        for _ in range(100)
+    ]
+    assert codes.count(500) == 20
+    assert codes.count(200) == 80
 
 
 def test_validate_rejects_sqlite_in_prod(tmp_path) -> None:

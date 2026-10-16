@@ -4,12 +4,12 @@ Use this as the definition of done for the overall portfolio and for each projec
 
 ## Portfolio-level
 
-- [ ] Resume ingested and stored privately for agent use (not published)
-- [ ] Every technical resume bullet appears in the traceability matrix
-- [ ] Each bullet has: mapped project(s), evidence type, verification status
-- [ ] Project set is coherent (depth over proliferation)
-- [ ] Landing documentation links resume themes → projects
-- [ ] No secrets / proprietary employer artifacts in git history
+- [x] Resume ingested and stored privately (not published)
+- [x] Every technical resume bullet appears in the traceability matrix
+- [x] Each bullet has: mapped project(s), evidence type, verification status
+- [x] Project set is coherent (depth over proliferation)
+- [x] Landing documentation links resume themes → projects
+- [x] No secrets / proprietary employer artifacts in git history
 - [ ] Public publication only after explicit approval
 - [ ] Final report delivered (completed work, tests, deploys, URLs, limits, approvals)
 
@@ -50,7 +50,13 @@ Use this as the definition of done for the overall portfolio and for each projec
 - [ ] Staff-level review completed; deficiencies fixed
 - [ ] Resume bullets for this project marked with evidence links
 
-## Current snapshot (2026-10-15)
+## Current snapshot (2026-10-16)
 
-Portfolio-level: **foundation scaffolding only** — blocked on resume.
-Per-project: **none started**.
+Portfolio-level: four projects are in git, with tests for the decision paths. Cloud apply has not happened. Docker-backed demos (image size, kind, compose) were not run in this environment.
+
+Per-project:
+
+- ci-cd-container-platform: pytest 10 passed, including the prod-sqlite rejection and `/metrics`.
+- terraform-remote-state: policy and lock tests passed, `terraform validate` passed, plan refused.
+- k8s-progressive-delivery: promote/rollback decisions and kubeconform passed. No cluster.
+- observability-incident-lab: alert threshold matches the canary controller; bad canary rolls back. Compose not started.

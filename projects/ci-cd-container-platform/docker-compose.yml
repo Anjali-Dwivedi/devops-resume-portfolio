@@ -27,3 +27,15 @@ services:
       APP_ENVIRONMENT: sit
       APP_CONFIG_PATH: /app/configs/sit.json
       APP_READY: "true"
+
+  checkout-api-uat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    profiles: ["uat"]
+    ports:
+      - "8082:8080"
+    environment:
+      APP_ENVIRONMENT: uat
+      APP_CONFIG_PATH: /app/configs/uat.json
+      APP_READY: "true"

@@ -63,6 +63,8 @@ curl -sf http://127.0.0.1:8080/healthz
 - [ ] Good config passes
 - [ ] Compose `dev` profile serves `/healthz` and `/readyz`
 
+Configs checked in: `dev`, `sit`, `uat`, `prod`, plus `bad-prod-sqlite` which must fail the gate. `/metrics` exposes `checkout_synthetic_error_rate` for the canary and incident labs.
+
 ## Security notes
 
 - No real secrets in repo; `.env.example` only

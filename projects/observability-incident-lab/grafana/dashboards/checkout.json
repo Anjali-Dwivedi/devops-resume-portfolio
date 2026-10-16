@@ -1,0 +1,43 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "graphTooltip": 0,
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1}},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "id": 1,
+      "targets": [
+        {
+          "expr": "checkout_synthetic_error_rate",
+          "refId": "A"
+        }
+      ],
+      "title": "Configured synthetic error rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1, "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 0.05}]}}},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "id": 2,
+      "targets": [
+        {
+          "expr": "checkout_synthetic_error_rate",
+          "refId": "A"
+        }
+      ],
+      "title": "Error rate against 5 percent promotion threshold",
+      "type": "stat"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["checkout", "portfolio"],
+  "time": {"from": "now-15m", "to": "now"},
+  "timezone": "browser",
+  "title": "Checkout incident lab",
+  "uid": "checkout-incident-lab",
+  "version": 1
+}

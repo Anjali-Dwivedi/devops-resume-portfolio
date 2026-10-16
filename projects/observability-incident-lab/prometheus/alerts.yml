@@ -1,0 +1,13 @@
+groups:
+  - name: checkout-api
+    rules:
+      - alert: CheckoutCanaryErrorRateHigh
+        expr: checkout_synthetic_error_rate >= 0.05
+        for: 1m
+        labels:
+          severity: page
+          service: checkout-api
+        annotations:
+          summary: Checkout error rate is at or above the promotion threshold
+          description: checkout_synthetic_error_rate is {{ $value }}. Threshold is 0.05, the same value the canary controller uses.
+          runbook: projects/observability-incident-lab/docs/RUNBOOK.md
