@@ -1,0 +1,26 @@
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis", "padding": 12}}}%%
+flowchart TB
+  Person["👤 Interviewer / engineer<br/>explores demos locally or via CI"]
+
+  subgraph System["DevOps Portfolio System"]
+    direction TB
+    Web["Landing README + Architecture Gallery<br/>[docs] explains design choices"]
+    CICDP["ci-cd-container-platform<br/>[container] builds & gates checkout-api"]
+    TFP["terraform-remote-state<br/>[IaC] safe state + modules"]
+    K8SP["k8s-progressive-delivery<br/>[orchestration] blue-green / canary"]
+    OBSP["observability-incident-lab<br/>[ops] metrics, alerts, runbooks"]
+  end
+
+  Person -->|reads| Web
+  Person -->|runs demos| CICDP
+  Person -->|validates plans| TFP
+  Person -->|runs kind demos| K8SP
+  Person -->|injects failures| OBSP
+  CICDP -->|image + metrics API| K8SP
+  K8SP -->|scrapes /metrics| OBSP
+  TFP -.->|optional AWS backing| K8SP
+
+  classDef person fill:#F7B538,stroke:#C9921A,color:#0B1F2A,stroke-width:2px
+  classDef sys fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA,stroke-width:1.5px
+  class Person person
+  class Web,CICDP,TFP,K8SP,OBSP sys

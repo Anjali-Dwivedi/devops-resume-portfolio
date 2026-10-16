@@ -1,0 +1,39 @@
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis"}}}%%
+flowchart TB
+  subgraph Users["North-south traffic"]
+    U[Client / interviewer demo]
+  end
+
+  subgraph Network["Network & edge"]
+    DNS[DNS name]
+    LB[Load balancer / Ingress]
+    SG[Security group / NetworkPolicy<br/>least ports]
+  end
+
+  subgraph Data["Data flow"]
+    REQ[HTTPS request]
+    ORD[Order API]
+    CFG[Config JSON / env]
+    DB[(Demo DB URL<br/>sqlite local · Postgres pattern)]
+  end
+
+  subgraph Control["Control flow"]
+    CI[CI pipeline]
+    TF[Terraform plan/apply]
+    CD[Progressive delivery controller]
+    OBS[Metrics-based gate]
+  end
+
+  U --> DNS --> LB --> SG --> REQ --> ORD
+  CFG --> ORD
+  ORD --> DB
+  CI --> CD --> OBS
+  OBS -->|promote/rollback| LB
+  TF -.->|infra| Network
+
+  classDef n fill:#E8F1F5,stroke:#1F6F8B,color:#0B1F2A
+  classDef d fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA
+  classDef c fill:#F7B538,stroke:#C9921A,color:#0B1F2A
+  class U,DNS,LB,SG n
+  class REQ,ORD,CFG,DB d
+  class CI,TF,CD,OBS c

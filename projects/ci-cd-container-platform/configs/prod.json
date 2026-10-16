@@ -1,0 +1,8 @@
+{
+  "environment": "prod",
+  "ready": true,
+  "database_url": "postgresql://checkout:REDACTED@db.prod.internal:5432/checkout",
+  "feature_flags": {
+    "orders_v2": false
+  }
+}

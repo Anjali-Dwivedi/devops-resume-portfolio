@@ -1,0 +1,46 @@
+# Secrets & local env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*
+.aws/
+
+# Resume / PII (keep out of git)
+**/resume/*.pdf
+**/*resume*.pdf
+**/AnjaliDwivedi*
+
+# Terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/.terraform.lock.hcl
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+*.egg-info/
+
+# Node
+node_modules/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Docker / kind
+kind-config-local.yaml.bak
+.venv/

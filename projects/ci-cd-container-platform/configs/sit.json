@@ -1,0 +1,8 @@
+{
+  "environment": "sit",
+  "ready": true,
+  "database_url": "postgresql://checkout:checkout@db:5432/checkout",
+  "feature_flags": {
+    "orders_v2": true
+  }
+}

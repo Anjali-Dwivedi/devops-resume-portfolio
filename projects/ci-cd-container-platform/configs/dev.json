@@ -1,0 +1,8 @@
+{
+  "environment": "dev",
+  "ready": true,
+  "database_url": "sqlite:///./demo.db",
+  "feature_flags": {
+    "orders_v2": true
+  }
+}

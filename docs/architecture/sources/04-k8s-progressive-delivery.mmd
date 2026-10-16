@@ -1,0 +1,45 @@
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 30, "rankSpacing": 40}}}%%
+flowchart TB
+  subgraph Edge["Edge · external access pattern"]
+    DNS[DNS / Route53 pattern]
+    ALB[ALB / Ingress controller]
+    ING[Ingress rules<br/>host + path]
+  end
+
+  subgraph Cluster["Kubernetes cluster · kind local / EKS optional"]
+    direction TB
+    SVC[Service · stable ClusterIP]
+    subgraph Workloads["Workloads"]
+      STABLE[stable Deployment<br/>vN · 100% baseline]
+      CANARY[canary Deployment<br/>vN+1 · small weight]
+    end
+    HPA[HPA / PDB notes]
+  end
+
+  subgraph Observe["Promotion control loop"]
+    METRICS[Error-rate metrics<br/>/metrics + Prometheus]
+    GATE{error_rate &lt; threshold?}
+    PROMOTE[Shift traffic → canary<br/>scale up new / down old]
+    ROLLBACK[Automatic rollback<br/>restore stable]
+  end
+
+  DNS --> ALB --> ING --> SVC
+  SVC --> STABLE
+  SVC --> CANARY
+  CANARY --> METRICS --> GATE
+  GATE -->|yes| PROMOTE
+  GATE -->|no| ROLLBACK
+  PROMOTE --> STABLE
+  ROLLBACK --> STABLE
+  HPA -.-> STABLE
+
+  classDef edge fill:#1F6F8B,stroke:#0B3D5C,color:#F4F7FA
+  classDef work fill:#E8F1F5,stroke:#1F6F8B,color:#0B1F2A
+  classDef decide fill:#F7B538,stroke:#C9921A,color:#0B1F2A
+  classDef bad fill:#8B1E3F,stroke:#5C0F28,color:#F4F7FA
+  classDef good fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA
+  class DNS,ALB,ING edge
+  class SVC,STABLE,CANARY,HPA,METRICS work
+  class GATE decide
+  class PROMOTE good
+  class ROLLBACK bad

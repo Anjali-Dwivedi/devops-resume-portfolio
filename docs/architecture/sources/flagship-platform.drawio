@@ -1,0 +1,129 @@
+<mxfile host="app.diagrams.net" modified="2026-10-15T09:32:00.000Z" agent="Cursor Portfolio Agent" version="22.1.0" type="device">
+  <diagram id="flagship" name="Platform Overview">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Anjali Dwivedi · DevOps Portfolio Platform Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#0B3D5C;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="900" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Independent reference implementations · CI/CD · Kubernetes progressive delivery · Terraform remote state · Observability" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=12;fontColor=#2C5364;" vertex="1" parent="1">
+          <mxGeometry x="40" y="55" width="1100" height="24" as="geometry"/>
+        </mxCell>
+
+        <!-- Left: CI/CD -->
+        <mxCell id="cicd_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F1F5;strokeColor=#1F6F8B;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="360" height="320" as="geometry"/>
+        </mxCell>
+        <mxCell id="cicd_title" value="CI/CD CONTAINER PLATFORM" style="text;html=1;fontStyle=1;fontSize=14;fontColor=#0B3D5C;align=left;" vertex="1" parent="1">
+          <mxGeometry x="55" y="110" width="300" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_pr" value="Pull Request" style="rounded=1;fillColor=#0B3D5C;fontColor=#FFFFFF;strokeColor=#0B3D5C;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="150" width="130" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_gates" value="Quality Gates&#xa;tests · config · build" style="rounded=1;fillColor=#1F6F8B;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="230" y="150" width="150" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_img" value="Multi-stage OCI image&#xa;non-root · HEALTHCHECK" style="rounded=1;fillColor=#0B3D5C;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="70" y="230" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_block" value="BLOCK on failure" style="rounded=1;fillColor=#8B1E3F;fontColor=#FFFFFF;strokeColor=#5C0F28;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="233" width="110" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_env" value="dev → sit → uat → prod&#xa;protected prod approval" style="rounded=1;fillColor=#F7B538;fontColor=#0B1F2A;strokeColor=#C9921A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="320" width="300" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2C5364;strokeWidth=2;" edge="1" parent="1" source="n_pr" target="n_gates">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2C5364;strokeWidth=2;" edge="1" parent="1" source="n_gates" target="n_img">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#8B1E3F;strokeWidth=2;dashed=1;" edge="1" parent="1" source="n_gates" target="n_block">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2C5364;strokeWidth=2;" edge="1" parent="1" source="n_img" target="n_env">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Center: K8s -->
+        <mxCell id="k8s_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F1F5;strokeColor=#1F6F8B;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="430" y="100" width="420" height="320" as="geometry"/>
+        </mxCell>
+        <mxCell id="k8s_title" value="KUBERNETES PROGRESSIVE DELIVERY" style="text;html=1;fontStyle=1;fontSize=14;fontColor=#0B3D5C;align=left;" vertex="1" parent="1">
+          <mxGeometry x="445" y="110" width="360" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_dns" value="DNS / Route53" style="rounded=1;fillColor=#1F6F8B;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="460" y="150" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_alb" value="ALB / Ingress" style="rounded=1;fillColor=#1F6F8B;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="610" y="150" width="120" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_stable" value="stable Deployment vN" style="rounded=1;fillColor=#0B3D5C;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="460" y="230" width="160" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_canary" value="canary Deployment vN+1" style="rounded=1;fillColor=#0B3D5C;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="650" y="230" width="170" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_gate" value="error-rate gate" style="rhombus;fillColor=#F7B538;fontColor=#0B1F2A;strokeColor=#C9921A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="300" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2C5364;strokeWidth=2;" edge="1" parent="1" source="n_dns" target="n_alb">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2C5364;strokeWidth=2;" edge="1" parent="1" source="n_alb" target="n_stable">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2C5364;strokeWidth=2;" edge="1" parent="1" source="n_alb" target="n_canary">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2C5364;strokeWidth=2;" edge="1" parent="1" source="n_canary" target="n_gate">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Right: State + Obs -->
+        <mxCell id="tf_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F1F5;strokeColor=#1F6F8B;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="880" y="100" width="300" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="tf_title" value="TERRAFORM REMOTE STATE" style="text;html=1;fontStyle=1;fontSize=14;fontColor=#0B3D5C;align=left;" vertex="1" parent="1">
+          <mxGeometry x="895" y="110" width="270" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_s3" value="S3 state · versioned · SSE" style="rounded=1;fillColor=#0B3D5C;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="900" y="150" width="260" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_ddb" value="DynamoDB lock · concurrency safe" style="rounded=1;fillColor=#1F6F8B;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="900" y="198" width="260" height="36" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="obs_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F1F5;strokeColor=#1F6F8B;strokeWidth=2;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="880" y="270" width="300" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="obs_title" value="OBSERVABILITY &amp; INCIDENT LAB" style="text;html=1;fontStyle=1;fontSize=14;fontColor=#0B3D5C;align=left;" vertex="1" parent="1">
+          <mxGeometry x="895" y="280" width="270" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_prom" value="Prometheus + Grafana" style="rounded=1;fillColor=#0B3D5C;fontColor=#FFFFFF;strokeColor=#0B3D5C;" vertex="1" parent="1">
+          <mxGeometry x="900" y="320" width="260" height="36" as="geometry"/>
+        </mxCell>
+        <mxCell id="n_rca" value="Synthetic failure → RCA runbook" style="rounded=1;fillColor=#8B1E3F;fontColor=#FFFFFF;strokeColor=#5C0F28;" vertex="1" parent="1">
+          <mxGeometry x="900" y="368" width="260" height="36" as="geometry"/>
+        </mxCell>
+
+        <!-- Bottom control loop -->
+        <mxCell id="loop_box" value="" style="rounded=1;fillColor=#0B3D5C;strokeColor=#1F6F8B;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="450" width="1140" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="loop_title" value="CONTROL LOOP" style="text;html=1;fontStyle=1;fontSize=13;fontColor=#F7B538;align=left;" vertex="1" parent="1">
+          <mxGeometry x="60" y="460" width="200" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="loop_txt" value="Commit → Quality gates → Artifact → Canary traffic split → Error-rate evaluation → Promote OR automatic rollback → Post-incident learning (new gate/test)" style="text;html=1;fontSize=13;fontColor=#F4F7FA;align=left;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="60" y="490" width="1080" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="legend" value="Palette: Navy = control plane · Teal = data path · Amber = decision/approval · Crimson = failure/block&#xa;Editable source: docs/architecture/sources/flagship-platform.drawio · Open in diagrams.net" style="text;html=1;fontSize=11;fontColor=#2C5364;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="560" width="1140" height="40" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

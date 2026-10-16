@@ -1,0 +1,40 @@
+name: ci-cd-container-platform
+
+on:
+  push:
+    paths:
+      - "projects/ci-cd-container-platform/**"
+      - ".github/workflows/ci-cd-container-platform.yml"
+  pull_request:
+    paths:
+      - "projects/ci-cd-container-platform/**"
+      - ".github/workflows/ci-cd-container-platform.yml"
+
+defaults:
+  run:
+    working-directory: projects/ci-cd-container-platform
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: projects/ci-cd-container-platform/requirements-dev.txt
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Unit tests
+        run: pytest -q
+      - name: Config gate · good prod
+        run: python scripts/validate_config.py configs/prod.json
+      - name: Config gate · bad prod must fail
+        run: |
+          if python scripts/validate_config.py configs/bad-prod-sqlite.json; then
+            echo "expected failure" >&2
+            exit 1
+          fi
+      - name: Build multi-stage image
+        run: docker build -t checkout-api:${{ github.sha }} -f Dockerfile .

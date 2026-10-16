@@ -1,0 +1,32 @@
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis"}}}%%
+flowchart LR
+  subgraph App["Application plane"]
+    API[checkout-api]
+    FAIL[Failure injector<br/>SYNTHETIC_ERROR_RATE]
+  end
+
+  subgraph Telemetry["Telemetry plane"]
+    MET[/metrics exposition/]
+    LOGS[Structured logs]
+    PROM[Prometheus scrape]
+    GRAF[Grafana dashboards]
+  end
+
+  subgraph Response["Response plane"]
+    ALERT[Alertmanager rule]
+    RB[Runbook<br/>detect → triage → mitigate]
+    RCA[RCA template]
+  end
+
+  FAIL --> API
+  API --> MET --> PROM --> GRAF
+  API --> LOGS
+  PROM --> ALERT --> RB --> RCA
+  GRAF --> RB
+
+  classDef app fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA
+  classDef tel fill:#1F6F8B,stroke:#0B3D5C,color:#F4F7FA
+  classDef resp fill:#F7B538,stroke:#C9921A,color:#0B1F2A
+  class API,FAIL app
+  class MET,LOGS,PROM,GRAF tel
+  class ALERT,RB,RCA resp

@@ -1,0 +1,52 @@
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis", "padding": 16, "nodeSpacing": 40, "rankSpacing": 50}}}%%
+flowchart TB
+  subgraph Interview["Interview Narrative"]
+    direction LR
+    R[Resume themes<br/>CI/CD · K8s · IaC · Reliability]
+  end
+
+  subgraph Landing["Portfolio Landing Repo"]
+    direction TB
+    IDX[Index + Traceability Matrix]
+    DIAG[Architecture Gallery]
+  end
+
+  subgraph P1["1 · CI/CD Container Platform"]
+    APP[checkout-api<br/>FastAPI sample]
+    GHA[GitHub Actions<br/>test · config gate · build]
+    IMG[Multi-stage OCI image]
+  end
+
+  subgraph P2["2 · Terraform Remote State"]
+    TF[Terraform modules]
+    STATE[S3 state + DynamoDB lock<br/>local backend for demos]
+  end
+
+  subgraph P3["3 · K8s Progressive Delivery"]
+    K8S[Deploy / Service / Ingress]
+    BG[Blue-green]
+    CAN[Canary + error-rate gate]
+  end
+
+  subgraph P4["4 · Observability Incident Lab"]
+    PROM[Prometheus + Grafana]
+    INC[Synthetic failure → RCA runbook]
+  end
+
+  R --> IDX
+  IDX --> DIAG
+  DIAG --> P1
+  DIAG --> P2
+  DIAG --> P3
+  DIAG --> P4
+
+  GHA --> IMG --> APP
+  APP -.->|feeds workloads| P3
+  APP -.->|emits metrics| P4
+  TF -.->|provisions optional AWS| P3
+
+  classDef hero fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA,stroke-width:2px
+  classDef box fill:#E8F1F5,stroke:#1F6F8B,color:#0B1F2A,stroke-width:1.5px
+  classDef accent fill:#F7B538,stroke:#C9921A,color:#0B1F2A,stroke-width:1.5px
+  class R,IDX,DIAG hero
+  class APP,GHA,IMG,TF,STATE,K8S,BG,CAN,PROM,INC box

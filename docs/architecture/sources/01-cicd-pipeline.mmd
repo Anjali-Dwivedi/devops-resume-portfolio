@@ -1,0 +1,46 @@
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 35, "rankSpacing": 45}}}%%
+flowchart LR
+  subgraph Source["Source Control"]
+    PR[Pull Request]
+    MAIN[main branch]
+  end
+
+  subgraph CI["GitHub Actions · Quality Gates"]
+    direction TB
+    LINT[Lint / format]
+    UNIT[Unit tests<br/>pytest]
+    CFG[Config validation gate<br/>reject sqlite-in-prod]
+    BUILD[Multi-stage Docker build]
+    SCAN[Image scan placeholder<br/>Trivy-ready]
+  end
+
+  subgraph Artifacts["Artifacts"]
+    OCI[OCI image<br/>checkout-api:sha]
+    SBOM[SBOM note<br/>supply-chain ready]
+  end
+
+  subgraph Envs["Environment Promotion"]
+    DEV[dev · auto]
+    SIT[sit · auto on green CI]
+    UAT[uat · manual review]
+    PROD[prod · protected env<br/>approval required]
+  end
+
+  PR --> LINT --> UNIT --> CFG --> BUILD --> SCAN
+  UNIT -->|fail| BLOCK1[Block merge]
+  CFG -->|fail| BLOCK1
+  SCAN -->|critical CVE| BLOCK1
+  BUILD --> OCI --> SBOM
+  MAIN --> DEV --> SIT --> UAT --> PROD
+  OCI --> DEV
+
+  classDef gate fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA
+  classDef fail fill:#8B1E3F,stroke:#5C0F28,color:#F4F7FA
+  classDef ok fill:#1F6F8B,stroke:#0B3D5C,color:#F4F7FA
+  classDef env fill:#E8F1F5,stroke:#1F6F8B,color:#0B1F2A
+  classDef warn fill:#F7B538,stroke:#C9921A,color:#0B1F2A
+  class LINT,UNIT,CFG,BUILD,SCAN gate
+  class BLOCK1 fail
+  class OCI,SBOM ok
+  class DEV,SIT,UAT env
+  class PROD warn

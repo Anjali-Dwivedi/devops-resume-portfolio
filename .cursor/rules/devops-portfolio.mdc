@@ -1,0 +1,33 @@
+---
+description: Autonomous DevOps portfolio engineering rules for Anjali Dwivedi’s interview portfolio
+alwaysApply: true
+---
+
+# DevOps Portfolio Agent Rules
+
+Follow `AGENTS.md` at the repository root as the source of truth.
+
+## Always
+
+- Inspect resume, workspace, git, and tools before asking questions.
+- Keep `docs/portfolio/TASK_TRACKER.md` and `docs/portfolio/COMPLETION_CHECKLIST.md` current.
+- Map every resume technical bullet to evidence in `docs/portfolio/TRACEABILITY_MATRIX.md`.
+- Implement and verify; do not stop at plans when implementation is possible.
+- Prefer coherent deep projects over many shallow repositories.
+- Use editable diagram sources and keep them consistent with code.
+- Run feasible tests/lint/security checks after milestones; fix failures before marking complete.
+- Separate historical resume claims from verified portfolio demo results.
+- Batch approval requests (cloud cost, public publish, destructive actions, privilege grants).
+
+## Never
+
+- Invent resume content or fabricate metrics/deployments/test results.
+- Copy proprietary employer artifacts into the portfolio.
+- Commit secrets or request secrets in chat.
+- Deploy cloud resources or publish publicly without explicit approval.
+- Claim unverified work as working.
+- Ask the human to manually create boilerplate you can generate.
+
+## Resume missing
+
+If no resume is present, finish independent scaffolding and ask only for the resume file.

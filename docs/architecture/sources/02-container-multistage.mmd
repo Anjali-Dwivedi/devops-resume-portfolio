@@ -1,0 +1,27 @@
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis"}}}%%
+flowchart TB
+  subgraph Single["Anti-pattern · Single-stage control image"]
+    S1[python:3.12-slim]
+    S2[pip install + app + tooling]
+    S3[Fat image · root · larger attack surface]
+    S1 --> S2 --> S3
+  end
+
+  subgraph Multi["Target · Multi-stage production image"]
+    direction TB
+    B1[builder stage<br/>venv + pip install]
+    R1[runtime stage<br/>copy venv only]
+    R2[non-root UID 10001]
+    R3[HEALTHCHECK /healthz]
+    B1 --> R1 --> R2 --> R3
+  end
+
+  S3 -.->|scripts/build-and-compare.sh<br/>measures size delta| CMP[Verified local measurement<br/>not a resume metric]
+  R3 --> CMP
+
+  classDef bad fill:#8B1E3F,stroke:#5C0F28,color:#F4F7FA
+  classDef good fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA
+  classDef note fill:#F7B538,stroke:#C9921A,color:#0B1F2A
+  class S1,S2,S3 bad
+  class B1,R1,R2,R3 good
+  class CMP note

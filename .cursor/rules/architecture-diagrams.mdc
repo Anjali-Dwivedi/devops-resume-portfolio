@@ -1,0 +1,13 @@
+---
+description: Prioritize visually strong, technically dense architecture diagrams for interviewer impact
+alwaysApply: true
+---
+
+# Architecture diagrams are the portfolio headline
+
+- Lead README and project docs with rendered diagrams from `docs/architecture/rendered/`.
+- Keep editable sources in `docs/architecture/sources/` (Mermaid + draw.io).
+- Re-render with `docs/architecture/scripts/render-all.sh` after source edits.
+- Prefer C4, deployment, sequence, failure/recovery, and threat-boundary diagrams over decorative graphics.
+- Keep the navy / teal / amber / crimson visual language consistent.
+- Never let diagrams drift from implementation.

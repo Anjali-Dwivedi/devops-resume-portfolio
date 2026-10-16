@@ -1,0 +1,6 @@
+{
+  "environment": "prod",
+  "ready": true,
+  "database_url": "sqlite:///./oops.db",
+  "feature_flags": {}
+}

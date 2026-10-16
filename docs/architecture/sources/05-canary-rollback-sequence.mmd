@@ -1,0 +1,31 @@
+%%{init: {"sequence": {"actorMargin": 28, "messageMargin": 35, "mirrorActors": false}}}%%
+sequenceDiagram
+  autonumber
+  actor Eng as Release engineer
+  participant CI as GitHub Actions
+  participant Reg as Image registry
+  participant Ctrl as Canary controller script
+  participant Stab as stable Deployment
+  participant Can as canary Deployment
+  participant Prom as Metrics /Prometheus
+  participant Ing as Ingress / Service
+
+  Eng->>CI: Merge release commit
+  CI->>CI: tests + config gate + build
+  CI->>Reg: Push checkout-api:vN+1
+  CI->>Ctrl: Trigger canary rollout
+  Ctrl->>Can: Deploy vN+1 at 10% weight
+  Ctrl->>Ing: Split traffic 90/10
+  loop Evaluate window
+    Can->>Prom: scrape checkout_synthetic_error_rate
+    Ctrl->>Prom: query error_rate
+  end
+  alt error_rate below threshold
+    Ctrl->>Ing: Shift 50% → 100% to canary
+    Ctrl->>Stab: Scale down old revision
+    Ctrl-->>Eng: Promote success
+  else error_rate exceeds threshold
+    Ctrl->>Ing: Send 100% to stable
+    Ctrl->>Can: Scale canary to 0 / delete
+    Ctrl-->>Eng: Auto-rollback + incident note
+  end
