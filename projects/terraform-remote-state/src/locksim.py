@@ -1,11 +1,16 @@
-"""In-process model of the Terraform S3 backend DynamoDB lock.
+"""In-process simulation of a DynamoDB-style Terraform state lock.
 
-Terraform acquires a state lock with a conditional PutItem on LockID
-(`attribute_not_exists`). The holder releases it with a conditional
-DeleteItem that matches the owner. This module implements that rule so the
-portfolio can demonstrate contention without calling AWS.
+Terraform 1.9.8 acquires the lock with PutItem and
+ConditionExpression attribute_not_exists(LockID). The lock id is
+bucket/key. This module copies that mutual-exclusion rule in memory so the
+portfolio can show contention without calling AWS.
 
-It is a simulation of the conditional-write algorithm, not a DynamoDB session.
+It does not perform a DynamoDB conditional write and it does not reproduce
+Terraform's locking implementation. It is not an integration test.
+
+Release here checks an owner string. Terraform 1.9.8 compares the lock-info
+UUID and then calls DeleteItem with no condition. force_unlock below deletes
+by the partition key. Terraform's force-unlock command requires that UUID.
 """
 
 from __future__ import annotations
@@ -73,8 +78,18 @@ class LockStore:
             current = self._items.get(lock_id)
             return None if current is None else current.owner
 
+    def force_unlock(self, lock_id: str) -> LockInfo | None:
+        """Delete the simulated item by partition key.
 
-def contend(lock_id: str = "portfolio/lab/terraform.tfstate") -> dict[str, str]:
+        This is not Terraform 1.9.8 force-unlock. That command passes the
+        lock-info UUID into Unlock, which checks the UUID and then calls
+        DeleteItem with no condition expression.
+        """
+        with self._mu:
+            return self._items.pop(lock_id, None)
+
+
+def contend(lock_id: str = "EXAMPLE_STATE_BUCKET/env/dev/terraform.tfstate") -> dict[str, str]:
     """Two teams apply at once. Exactly one acquire succeeds while the lock is held."""
     store = LockStore()
     results: dict[str, str] = {}
@@ -109,7 +124,7 @@ def contend(lock_id: str = "portfolio/lab/terraform.tfstate") -> dict[str, str]:
 
 def demo() -> int:
     outcome = contend()
-    print("local DynamoDB-style lock simulation (no AWS API calls)")
+    print("in-process lock simulation (not DynamoDB, no AWS API calls)")
     for key, value in outcome.items():
         print(f"  {key}: {value}")
     print("release transferred the lock; no cloud resources were created")

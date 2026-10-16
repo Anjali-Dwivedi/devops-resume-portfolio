@@ -57,6 +57,6 @@ Portfolio-level: four projects are in git, with tests for the decision paths. Cl
 Per-project:
 
 - ci-cd-container-platform: pytest 10 passed, including the prod-sqlite rejection and `/metrics`.
-- terraform-remote-state: policy and lock tests passed, `terraform validate` passed, plan refused.
+- terraform-remote-state: 27 pytest passed. Terraform 1.9.8 `validate` passed for bootstrap and consumer. Plan and apply were not run.
 - k8s-progressive-delivery: promote/rollback decisions and kubeconform passed. No cluster.
 - observability-incident-lab: alert threshold matches the canary controller; bad canary rolls back. Compose not started.

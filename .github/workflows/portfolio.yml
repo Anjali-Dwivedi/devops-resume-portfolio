@@ -50,8 +50,8 @@ jobs:
           python-version: "3.12"
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.16.6"
-      - name: Validate lab without apply
+          terraform_version: "1.9.8"
+      - name: Validate remote state without apply
         working-directory: projects/terraform-remote-state
         run: ./scripts/validate.sh
 

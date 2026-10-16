@@ -5,7 +5,7 @@ Employer metrics are **historical claims**; portfolio evidence uses independentl
 
 | ID | Resume theme | Portfolio project | Evidence | Type | Status |
 |----|--------------|-------------------|----------|------|--------|
-| B01 | Terraform remote state S3 + DynamoDB locking | `projects/terraform-remote-state` | Modules, local lock simulation, `terraform validate`. Apply not run. | impl+test | verified local |
+| B01 | Terraform remote state S3 + DynamoDB locking | `projects/terraform-remote-state` | Bootstrap, consumer, operator and break-glass recovery IAM, in-process lock simulation, Terraform 1.9.8 `validate`. Apply not run. Not employer code. | impl+test | verified local |
 | B02 | Kubernetes adoption / standards for microservices | `projects/k8s-progressive-delivery` | Deployments, Services, Helm chart, kubeconform. Kind not started. | impl+test | verified local |
 | B03 | CI/CD automation / pipeline optimisation | `projects/ci-cd-container-platform` | GitHub Actions workflow plus pytest | impl | verified tests |
 | B04 | GitHub Actions: test, Docker build, deploy | `projects/ci-cd-container-platform` | `.github/workflows/ci-cd-container-platform.yml` and `portfolio.yml` | impl | workflow in repo |

@@ -65,7 +65,8 @@ def _assigned(block: str, names: tuple[str, ...]) -> list[str]:
 
 
 def _is_deny(block: str) -> bool:
-    return re.search(r'(?i)\beffect\s*[:=]\s*"deny"', block) is not None
+    # HCL uses effect = "Deny". JSON uses "Effect": "Deny".
+    return re.search(r'(?i)(?:"effect"|effect)\s*[:=]\s*"deny"', block) is not None
 
 
 def forbidden_action(action: str) -> str | None:
@@ -115,20 +116,33 @@ def scan_text(path: str, text: str) -> list[Finding]:
     return findings
 
 
+def _candidate_files(raw: Path) -> list[Path]:
+    if raw.is_file():
+        return [raw]
+    files: list[Path] = []
+    for pattern in ("*.tf", "*.json"):
+        files.extend(raw.rglob(pattern))
+    selected: list[Path] = []
+    for file in files:
+        if not file.is_file():
+            continue
+        if ".terraform" in file.parts:
+            continue
+        selected.append(file)
+    return sorted(selected)
+
+
 def scan_paths(paths: list[Path]) -> list[Finding]:
     findings: list[Finding] = []
     for raw in paths:
-        files = sorted(raw.rglob("*.tf")) if raw.is_dir() else [raw]
-        for file in files:
-            if not file.is_file():
-                continue
+        for file in _candidate_files(raw):
             findings.extend(scan_text(str(file), file.read_text(encoding="utf-8")))
     return findings
 
 
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
-    roots = [Path(arg) for arg in args] or [Path("modules"), Path("envs")]
+    roots = [Path(arg) for arg in args] or [Path("bootstrap"), Path("consumer"), Path("iam")]
     findings = scan_paths(roots)
     for finding in findings:
         print(finding)

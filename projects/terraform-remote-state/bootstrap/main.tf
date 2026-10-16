@@ -1,9 +1,26 @@
+# Bootstrap creates only the remote-state backend: one S3 bucket and one DynamoDB lock table.
+# It does not create a network, a cluster, or application infrastructure.
+
+locals {
+  # Terraform 1.9.8 rejects a precondition condition that is the bare literal false.
+  # This local is that constant. It is not a variable and -var cannot change it.
+  apply_allowed = false
+}
+
+resource "terraform_data" "apply_guard" {
+  lifecycle {
+    precondition {
+      # A plan fails here. terraform validate does not evaluate this precondition.
+      # Backend init can run before it. Editing this block removes the guard.
+      # This is not a security boundary.
+      condition     = local.apply_allowed
+      error_message = "Refusing to plan or apply this bootstrap. This precondition is a demonstration guard, not a security boundary. terraform validate does not evaluate it. Backend initialization can run before it. Editing this file removes the guard."
+    }
+  }
+}
+
 resource "aws_s3_bucket" "state" {
   bucket = var.state_bucket_name
-
-  tags = merge(var.tags, {
-    Name = var.state_bucket_name
-  })
 }
 
 resource "aws_s3_bucket_versioning" "state" {
@@ -21,7 +38,6 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
     }
-    bucket_key_enabled = true
   }
 }
 
@@ -33,7 +49,7 @@ resource "aws_s3_bucket_public_access_block" "state" {
   restrict_public_buckets = true
 }
 
-data "aws_iam_policy_document" "state" {
+data "aws_iam_policy_document" "tls_only" {
   statement {
     sid    = "DenyInsecureTransport"
     effect = "Deny"
@@ -60,7 +76,7 @@ data "aws_iam_policy_document" "state" {
 
 resource "aws_s3_bucket_policy" "state" {
   bucket = aws_s3_bucket.state.id
-  policy = data.aws_iam_policy_document.state.json
+  policy = data.aws_iam_policy_document.tls_only.json
 
   depends_on = [aws_s3_bucket_public_access_block.state]
 }
@@ -75,15 +91,8 @@ resource "aws_dynamodb_table" "lock" {
     type = "S"
   }
 
-  point_in_time_recovery {
-    enabled = true
-  }
-
+  # AWS-owned key. This block does not select a customer-managed KMS key.
   server_side_encryption {
     enabled = true
   }
-
-  tags = merge(var.tags, {
-    Name = var.lock_table_name
-  })
 }

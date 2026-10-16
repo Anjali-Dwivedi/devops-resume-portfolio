@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListExampleStateVersions",
+      "Effect": "Allow",
+      "Action": "s3:ListBucketVersions",
+      "Resource": "arn:aws:s3:::EXAMPLE_STATE_BUCKET",
+      "Condition": {
+        "StringEquals": {
+          "s3:prefix": [
+            "env/dev/terraform.tfstate",
+            "env/sit/terraform.tfstate",
+            "env/uat/terraform.tfstate",
+            "env/prod/terraform.tfstate"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "ReadExampleStateVersions",
+      "Effect": "Allow",
+      "Action": "s3:GetObjectVersion",
+      "Resource": [
+        "arn:aws:s3:::EXAMPLE_STATE_BUCKET/env/dev/terraform.tfstate",
+        "arn:aws:s3:::EXAMPLE_STATE_BUCKET/env/sit/terraform.tfstate",
+        "arn:aws:s3:::EXAMPLE_STATE_BUCKET/env/uat/terraform.tfstate",
+        "arn:aws:s3:::EXAMPLE_STATE_BUCKET/env/prod/terraform.tfstate"
+      ]
+    }
+  ]
+}
