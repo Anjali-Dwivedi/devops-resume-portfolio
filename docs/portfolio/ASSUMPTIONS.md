@@ -36,6 +36,13 @@ Recorded: 2026-10-15
 3. Prefer open-source, locally reproducible demos first; cloud only when it adds unique interview value and is approved.
 4. Individual extra repositories only when a theme needs independent CI history or clarity; default to monorepo `/projects/<name>` under the landing repo for speed and coherence during development.
 
+## Update 2026-10-16
+
+- This working copy is `Anjali-Dwivedi/devops-resume-portfolio`. Changes land through a branch into `main`.
+- Terraform 1.16.6, AWS provider 6.69.1, Helm 4.3.1, kubeconform 0.8.0, and kubectl 1.37.1 were installed for the earlier local checks. The remote-state case study now validates with Terraform 1.9.8 and AWS provider 5.100.0. Helm, kubeconform, and kubectl versions were not changed.
+- Docker, kind, and the AWS CLI are still absent. Demos that need them are written and were not executed.
+- A `terraform plan` was run only against the earlier lab, to observe the apply guard. It failed. No state file and no AWS resource were created. That lab has been removed. This remote-state revision did not run plan.
+
 ## Explicit non-assumptions
 
 - Do not assume AWS vs GCP vs Azure preference until resume (or human) indicates cloud focus

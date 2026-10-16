@@ -16,7 +16,7 @@ credentials*
 **/.terraform/
 **/*.tfstate
 **/*.tfstate.*
-**/.terraform.lock.hcl
+backend.hcl
 crash.log
 override.tf
 override.tf.json

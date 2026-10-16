@@ -1,0 +1,30 @@
+namespace: checkout
+image:
+  repository: checkout-api
+  tag: local
+  pullPolicy: IfNotPresent
+host: checkout.local
+databaseUrl: postgresql://checkout:example@db.internal:5432/checkout
+stable:
+  replicas: 2
+  version: v1
+  errorRate: "0"
+canary:
+  replicas: 1
+  version: v2
+  weight: 10
+  errorRate: "0"
+service:
+  port: 80
+  targetPort: 8080
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 128Mi
+hpa:
+  minReplicas: 2
+  maxReplicas: 6
+  cpuUtilization: 70

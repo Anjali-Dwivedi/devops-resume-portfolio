@@ -1,0 +1,8 @@
+{
+  "environment": "uat",
+  "ready": true,
+  "database_url": "postgresql://checkout:example@db.uat.internal:5432/checkout",
+  "feature_flags": {
+    "orders_v2": false
+  }
+}

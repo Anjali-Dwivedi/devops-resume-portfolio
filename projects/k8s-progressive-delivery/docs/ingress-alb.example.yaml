@@ -1,0 +1,27 @@
+# Production edge pattern for Route53 + ALB. Not applied by the kind demo.
+# The local demo uses ingress-nginx canary-weight because kind has no ALB.
+# The promotion decision in controller/canary.py is the same; only the actuator changes.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: checkout-alb-example
+  namespace: checkout
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /readyz
+    external-dns.alpha.kubernetes.io/hostname: checkout.example.com
+spec:
+  rules:
+    - host: checkout.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: checkout-stable
+                port:
+                  number: 80

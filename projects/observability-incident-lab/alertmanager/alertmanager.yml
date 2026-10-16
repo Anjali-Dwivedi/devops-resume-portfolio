@@ -1,0 +1,11 @@
+# Local receiver. This demo records the decision in an RCA file.
+# It does not page anyone and it does not call a cloud notification service.
+route:
+  receiver: local-null
+  group_by: ["alertname"]
+  group_wait: 5s
+  group_interval: 1m
+  repeat_interval: 1h
+
+receivers:
+  - name: local-null

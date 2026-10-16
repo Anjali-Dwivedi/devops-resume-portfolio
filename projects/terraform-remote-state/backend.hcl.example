@@ -1,0 +1,18 @@
+# Partial backend configuration for consumer/.
+# Copy to backend.hcl (gitignored) and replace every EXAMPLE_ value.
+# These names are placeholders. They are not an employer account, bucket, or environment.
+#
+# Use one key per root:
+#   env/dev/terraform.tfstate
+#   env/sit/terraform.tfstate
+#   env/uat/terraform.tfstate
+#   env/prod/terraform.tfstate
+#
+# Do not add access_key, secret_key, token, kms_key_id, or use_lockfile.
+# Credentials come from the environment or a named profile.
+
+bucket         = "EXAMPLE_STATE_BUCKET"
+key            = "env/dev/terraform.tfstate"
+region         = "EXAMPLE_REGION"
+dynamodb_table = "EXAMPLE_LOCK_TABLE"
+encrypt        = true

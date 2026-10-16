@@ -33,10 +33,10 @@ Editable sources: Mermaid (`.mmd`) + [flagship draw.io](docs/architecture/source
 
 | Project | Resume themes | Status |
 |---------|---------------|--------|
-| [`projects/ci-cd-container-platform`](projects/ci-cd-container-platform) | GitHub Actions, Docker multi-stage, config gates, multi-env | Implementing |
-| `projects/terraform-remote-state` | S3 + DynamoDB state locking, least-privilege IAM | Scaffolding |
-| `projects/k8s-progressive-delivery` | Blue-green / canary, Ingress, error-rate rollback | Scaffolding |
-| `projects/observability-incident-lab` | Metrics, synthetic failure, RCA runbooks | Scaffolding |
+| [`projects/ci-cd-container-platform`](projects/ci-cd-container-platform) | GitHub Actions, Docker multi-stage, config gates, multi-env | Tests and gates in repo. Image-size demo needs Docker. |
+| [`projects/terraform-remote-state`](projects/terraform-remote-state) | S3 + DynamoDB state locking, least-privilege IAM | Validate-only. No AWS apply. |
+| [`projects/k8s-progressive-delivery`](projects/k8s-progressive-delivery) | Canary weight, Ingress, error-rate rollback | Controller and manifests verified without a cluster. |
+| [`projects/observability-incident-lab`](projects/observability-incident-lab) | Metrics, synthetic failure, RCA | Decision path verified. Compose stack needs Docker. |
 
 Traceability: [`docs/portfolio/TRACEABILITY_MATRIX.md`](docs/portfolio/TRACEABILITY_MATRIX.md)
 
@@ -46,7 +46,8 @@ Traceability: [`docs/portfolio/TRACEABILITY_MATRIX.md`](docs/portfolio/TRACEABIL
 
 Autonomous agent instructions: [`AGENTS.md`](AGENTS.md) · Task tracker: [`docs/portfolio/TASK_TRACKER.md`](docs/portfolio/TASK_TRACKER.md)
 
-### Publication note
+### Cloud and publication
 
-Intended destination repo: [`Anjali-Dwivedi/devops-resume-portfolio`](https://github.com/Anjali-Dwivedi/devops-resume-portfolio).  
-Current agent write access is on this repository (`Devops-`) until write permission is granted on the destination.
+This repository is [Anjali-Dwivedi/devops-resume-portfolio](https://github.com/Anjali-Dwivedi/devops-resume-portfolio).
+
+No AWS resources have been created. Terraform stays at `validate`. Kind and the Prometheus compose stack are local and were not started where Docker is absent. Publishing further or provisioning cloud resources still needs an explicit approval.

@@ -5,20 +5,20 @@ Employer metrics are **historical claims**; portfolio evidence uses independentl
 
 | ID | Resume theme | Portfolio project | Evidence | Type | Status |
 |----|--------------|-------------------|----------|------|--------|
-| B01 | Terraform remote state S3 + DynamoDB locking | `projects/terraform-remote-state` | modules, local backend demo, optional AWS backend docs, `terraform validate` | impl+test | in progress |
-| B02 | Kubernetes adoption / standards for microservices | `projects/k8s-progressive-delivery` + platform sample | Deployments, Services, Helm chart, kind demo | impl | pending |
-| B03 | CI/CD automation / pipeline optimisation | `projects/ci-cd-container-platform` | GitHub Actions workflow, stage caching notes | impl+demo | in progress |
-| B04 | GitHub Actions: test, Docker build, deploy | `projects/ci-cd-container-platform` | `.github/workflows/ci-cd-container-platform.yml` | impl | in progress |
-| B05 | Docker multi-stage builds / smaller images | `projects/ci-cd-container-platform` | Dockerfile + size comparison script | impl+demo | in progress |
-| B06 | Route53 + ALB + Ingress custom domains | `projects/k8s-progressive-delivery` | Ingress manifests + AWS design doc (cloud apply gated) | impl+doc | pending |
-| B07 | Blue-green / canary + error-rate gate rollback | `projects/k8s-progressive-delivery` | Canary script, failure injection, rollback demo | impl+demo | pending |
-| B08 | Onboard teams to CI / remove manual steps | Landing docs + platform README | Reusable workflow template + onboarding runbook | doc+impl | pending |
-| B09 | RCA via logs/alerts (Splunk/Dynatrace/CW) | `projects/observability-incident-lab` | Synthetic incident + Prometheus/Grafana (CW patterns documented) | impl+demo | pending |
-| B10 | Faster triage / fewer recurring incidents | `projects/observability-incident-lab` | Runbooks + preventive check demos | doc+demo | pending |
-| B11 | Multi-env deploys (dev/SIT/UAT/prod) | `projects/ci-cd-container-platform` | env overlays / compose profiles | impl | pending |
-| B12 | Catch env config issues pre-prod | `projects/ci-cd-container-platform` | Config validation gate that fails CI | demo | pending |
-| B13 | Coordinated multi-env releases | Landing + release checklist | Release runbook | doc | pending |
-| B14 | Change mgmt / regulated compliance | `docs/portfolio/COMPLIANCE-NOTES.md` | Documentation-only patterns (no employer process copy) | doc-only | pending |
+| B01 | Terraform remote state S3 + DynamoDB locking | `projects/terraform-remote-state` | Bootstrap, consumer, operator and break-glass recovery IAM, in-process lock simulation, Terraform 1.9.8 `validate`. Apply not run. Not employer code. | impl+test | verified local |
+| B02 | Kubernetes adoption / standards for microservices | `projects/k8s-progressive-delivery` | Deployments, Services, Helm chart, kubeconform. Kind not started. | impl+test | verified local |
+| B03 | CI/CD automation / pipeline optimisation | `projects/ci-cd-container-platform` | GitHub Actions workflow plus pytest | impl | verified tests |
+| B04 | GitHub Actions: test, Docker build, deploy | `projects/ci-cd-container-platform` | `.github/workflows/ci-cd-container-platform.yml` and `portfolio.yml` | impl | workflow in repo |
+| B05 | Docker multi-stage builds / smaller images | `projects/ci-cd-container-platform` | Dockerfile plus size script. Size numbers are from an earlier environment, not re-measured here. | impl | script present |
+| B06 | Route53 + ALB + Ingress custom domains | `projects/k8s-progressive-delivery` | nginx Ingress in `deploy/`; ALB example is documentation only. No AWS load balancer. | impl+doc | local ingress only |
+| B07 | Blue-green / canary + error-rate gate rollback | `projects/k8s-progressive-delivery` | `controller/canary.py` promote and rollback demos | impl+demo | verified local |
+| B08 | Onboard teams to CI / remove manual steps | `docs/portfolio/ONBOARDING.md` | Onboarding steps and the portfolio workflow | doc | documented |
+| B09 | RCA via logs/alerts | `projects/observability-incident-lab` | Synthetic incident, Prometheus rule, RCA. Not Splunk/Dynatrace/CloudWatch. | impl+demo | verified local |
+| B10 | Faster triage / fewer recurring incidents | `projects/observability-incident-lab` | Runbook and rollback test. No incident-rate metric is claimed. | doc+demo | verified local |
+| B11 | Multi-env deploys (dev/SIT/UAT/prod) | `projects/ci-cd-container-platform` | `configs/{dev,sit,uat,prod}.json` and compose profiles | impl | configs in repo |
+| B12 | Catch env config issues pre-prod | `projects/ci-cd-container-platform` | `validate_config_file` rejects sqlite in prod. Covered by pytest. | demo | verified tests |
+| B13 | Coordinated multi-env releases | `docs/portfolio/RELEASE-RUNBOOK.md` | Release order and rollback | doc | documented |
+| B14 | Change mgmt / regulated compliance | `docs/portfolio/COMPLIANCE-NOTES.md` | Documentation-only. Not a certification and not an employer process. | doc-only | documented |
 
 ## Project grouping rationale
 

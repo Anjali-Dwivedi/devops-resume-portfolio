@@ -1,0 +1,71 @@
+name: portfolio
+
+on:
+  push:
+    paths:
+      - "projects/**"
+      - ".github/workflows/portfolio.yml"
+      - "scripts/verify-portfolio.sh"
+  pull_request:
+    paths:
+      - "projects/**"
+      - ".github/workflows/portfolio.yml"
+      - "scripts/verify-portfolio.sh"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: checkout-api tests
+        working-directory: projects/ci-cd-container-platform
+        run: |
+          pip install -r requirements-dev.txt
+          pytest -q
+      - name: remote-state tests
+        working-directory: projects/terraform-remote-state
+        run: |
+          pip install pytest
+          pytest -q
+      - name: canary tests
+        working-directory: projects/k8s-progressive-delivery
+        run: |
+          pip install pytest
+          pytest -q
+      - name: incident-lab tests
+        working-directory: projects/observability-incident-lab
+        run: |
+          pip install pytest
+          pytest -q
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+      - name: Validate remote state without apply
+        working-directory: projects/terraform-remote-state
+        run: ./scripts/validate.sh
+
+  manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install helm and kubeconform
+        run: |
+          curl -fsSL -o /tmp/helm.tgz "https://get.helm.sh/helm-v4.3.1-linux-amd64.tar.gz"
+          tar -xzf /tmp/helm.tgz -C /tmp
+          sudo install -m 0755 /tmp/linux-amd64/helm /usr/local/bin/helm
+          curl -fsSL -o /tmp/kubeconform.tgz "https://github.com/yannh/kubeconform/releases/download/v0.8.0/kubeconform-linux-amd64.tar.gz"
+          tar -xzf /tmp/kubeconform.tgz -C /tmp
+          sudo install -m 0755 /tmp/kubeconform /usr/local/bin/kubeconform
+      - name: Client-side manifest dry-run
+        run: ./projects/k8s-progressive-delivery/scripts/render-and-lint.sh

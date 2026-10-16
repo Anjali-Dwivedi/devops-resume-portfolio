@@ -1,41 +1,27 @@
 %%{init: {"flowchart": {"htmlLabels": true, "curve": "basis"}}}%%
 flowchart TB
-  subgraph Teams["Concurrent engineering teams"]
-    T1[Team A · terraform apply]
-    T2[Team B · terraform apply]
-  end
+  classDef control fill:#0B1F3A,color:#ffffff,stroke:#0B1F3A
+  classDef data fill:#0F6E6E,color:#ffffff,stroke:#0F6E6E
+  classDef decision fill:#F7B538,color:#0B1F2A,stroke:#C9921A
 
-  subgraph Control["State control plane"]
-    INIT[terraform init]
-    LOCK[DynamoDB lock table<br/>LockID conditional write]
-    STATE[S3 state bucket<br/>versioning · SSE · block public]
-  end
+  operators["Operators and CI"]:::control
+  terraform["Terraform 1.9.8"]:::control
+  table["DynamoDB lock table<br/>partition key LockID"]:::data
+  acquire["Acquire: PutItem when LockID is absent"]:::decision
+  release["Release: DeleteItem on LockID"]:::decision
+  bucket["S3 state bucket<br/>GetObject, then PutObject"]:::data
+  versioning["Versioning enabled"]:::data
+  sse["SSE-S3 AES256"]:::data
+  public["Public access block"]:::data
+  tls["TLS-only bucket policy<br/>Deny when SecureTransport is false"]:::data
 
-  subgraph Modules["Reusable modules"]
-    VPC[network module]
-    IAM[IAM least-privilege module]
-    EKS[EKS/node stubs · optional]
-  end
-
-  subgraph Safety["Safety rails"]
-    PLAN[terraform plan · reviewed]
-    POLICY[Policy checks<br/>no wildcard IAM]
-    APPLY[apply only after approval]
-  end
-
-  T1 --> INIT
-  T2 --> INIT
-  INIT --> LOCK
-  LOCK -->|acquire| STATE
-  STATE --> PLAN --> POLICY --> APPLY
-  APPLY --> VPC
-  APPLY --> IAM
-  APPLY --> EKS
-  APPLY -->|release| LOCK
-
-  classDef actor fill:#E8F1F5,stroke:#1F6F8B,color:#0B1F2A
-  classDef core fill:#0B3D5C,stroke:#1F6F8B,color:#F4F7FA
-  classDef safe fill:#F7B538,stroke:#C9921A,color:#0B1F2A
-  class T1,T2,VPC,IAM,EKS actor
-  class INIT,LOCK,STATE core
-  class PLAN,POLICY,APPLY safe
+  operators --> terraform
+  terraform --> acquire
+  acquire --> table
+  terraform --> bucket
+  terraform --> release
+  release --> table
+  bucket --- versioning
+  bucket --- sse
+  bucket --- public
+  bucket --- tls
